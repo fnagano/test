@@ -39,9 +39,6 @@ var x = d3.scaleLinear()		// y = d3.scaleLinear()
 var z = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 	
-var tooltip = d3.select("svg")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
 
 d3.csv("data.csv", function(d, i, columns) {
   for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
@@ -68,20 +65,8 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("y", function(d) { return y(d.data.State); })	    //.attr("x", function(d) { return x(d.data.State); })
       .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      .attr("height", y.bandwidth())						    //.attr("width", x.bandwidth());	
-    .on("mouseover", function (d) {
-    tooltip.transition()
-      .duration(200)
-      .style("opacity", 1);
-    tooltip.html("<span>" + d.y + " calls" + "</span>")
-      .style("left", (d3.event.pageX - 25) + "px")
-      .style("top", (d3.event.pageY - 28) + "px");
-  })
-    .on("mouseout", function (d) {
-    tooltip.transition()
-      .duration(500)
-      .style("opacity", 0);
-  });
+      .attr("height", y.bandwidth());					    //.attr("width", x.bandwidth());	
+
 	
   g.append("g")
       .attr("class", "axis")
