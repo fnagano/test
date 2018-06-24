@@ -4,17 +4,6 @@
 .axis .domain {
   display: none;
 }
-	
-.tooltip {
-  color: #4a4a4a;
-  position: absolute;
-  text-align: center;
-  padding: 3px 6px;
-  font-size: 12px;
-  background: #fff;
-  border-radius: 4px;
-  pointer-events: none;
-}
 
 </style>
 <svg width="960" height="800"></svg>
@@ -65,8 +54,15 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("y", function(d) { return y(d.data.State); })	    //.attr("x", function(d) { return x(d.data.State); })
       .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      .attr("height", y.bandwidth());					    //.attr("width", x.bandwidth());	
-
+      .attr("height", y.bandwidth())					    //.attr("width", x.bandwidth());	
+  .on("mouseover", function() { tooltip.style("display", null); })
+  .on("mouseout", function() { tooltip.style("display", "none"); })
+  .on("mousemove", function(d) {
+    var xPosition = d3.mouse(this)[0] - 15;
+    var yPosition = d3.mouse(this)[1] - 25;
+    tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+    tooltip.select("text").text(d.y);
+  });
 	
   g.append("g")
       .attr("class", "axis")
@@ -90,6 +86,23 @@ d3.csv("data.csv", function(d, i, columns) {
 	
 
 });
+	
+	var tooltip = svg.append("g")
+  .attr("class", "tooltip")
+  .style("display", "none");
+    
+tooltip.append("rect")
+  .attr("width", 30)
+  .attr("height", 20)
+  .attr("fill", "white")
+  .style("opacity", 1);
+
+tooltip.append("text")
+  .attr("x", 15)
+  .attr("dy", "1.2em")
+  .style("text-anchor", "middle")
+  .attr("font-size", "12px")
+  .attr("font-weight", "bold");
 
 </script>
 
