@@ -4,6 +4,16 @@
 .axis .domain {
   display: none;
 }
+	
+.toolTip {
+	position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  padding: 14px;
+  text-align: center;
+}
 
 </style>
 <svg width="960" height="960"></svg>
@@ -54,14 +64,14 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("height", y.bandwidth())						    //.attr("width", x.bandwidth());	
-  .on("mouseover", function() { tooltip.style("display", null); })
-  .on("mouseout", function() { tooltip.style("display", "none"); })
-  .on("mousemove", function(d) {
-    var xPosition = d3.mouse(this)[0] - 15;
-    var yPosition = d3.mouse(this)[1] - 25;
-    tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-    tooltip.select("text").text(d.x);
-  });
+        .on("mousemove", function(d){
+            tooltip
+              .style("left", d3.event.pageX - 50 + "px")
+              .style("top", d3.event.pageY - 70 + "px")
+              .style("display", "inline-block")
+              .html((d.area) + "<br>" + "£" + (d.value));
+        })
+    		.on("mouseout", function(d){ tooltip.style("display", "none");});
 	
   g.append("g")
       .attr("class", "axis")
@@ -83,24 +93,7 @@ d3.csv("data.csv", function(d, i, columns) {
 	  .attr("transform", "translate("+ (-width) +",-10)");   	// Newline
 
 	
-// Prep the tooltip bits, initial display is hidden
-var tooltip = svg.append("g")
-  .attr("class", "tooltip")
-  .style("display", "none");
-    
-tooltip.append("rect")
-  .attr("width", 30)
-  .attr("height", 20)
-  .attr("fill", "white")
-  .style("opacity", 1);
 
-tooltip.append("text")
-  .attr("y", 15)
-  .attr("dx", "1.2em")
-  .style("text-anchor", "middle")
-  .attr("font-size", "12px")
-  .attr("font-weight", "bold");	
-	
 });
 
 </script>
