@@ -5,18 +5,19 @@
   display: none;
 }
 	
-.toolTip {
-	position: absolute;
-  display: none;
-  min-width: 80px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  padding: 14px;
+div.tooltip {
+  color: #4a4a4a;
+  position: absolute;
   text-align: center;
+  padding: 3px 6px;
+  font-size: 12px;
+  background: #fff;
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 </style>
-<svg width="960" height="960"></svg>
+<svg width="960" height="400"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <h1>D3 Stacked Bar Chart</h1>
 <script>
@@ -38,7 +39,9 @@ var x = d3.scaleLinear()		// y = d3.scaleLinear()
 var z = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 	
-var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+var tooltip = d3.select("#svg").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
 
 d3.csv("data.csv", function(d, i, columns) {
   for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
@@ -66,14 +69,19 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("height", y.bandwidth())						    //.attr("width", x.bandwidth());	
-        .on("mousemove", function(d){
-            tooltip
-              .style("left", d3.event.pageX - 50 + "px")
-              .style("top", d3.event.pageY - 70 + "px")
-              .style("display", "inline-block")
-              .html((d.data.total) + "<br>" + (d.data.keys));
-        })
-    		.on("mouseout", function(d){ tooltip.style("display", "none");});
+    .on("mouseover", function (d) {
+    tooltip.transition()
+      .duration(200)
+      .style("opacity", 1);
+    tooltip.html("<span>" + d.y + " calls" + "</span>")
+      .style("left", (d3.event.pageX - 25) + "px")
+      .style("top", (d3.event.pageY - 28) + "px");
+  })
+    .on("mouseout", function (d) {
+    tooltip.transition()
+      .duration(500)
+      .style("opacity", 0);
+  })
 	
   g.append("g")
       .attr("class", "axis")
