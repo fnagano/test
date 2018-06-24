@@ -61,7 +61,7 @@ d3.csv("data.csv", function(d, i, columns) {
     var xPosition = d3.mouse(this)[0] - 15;
     var yPosition = d3.mouse(this)[1] - 25;
     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-    tooltip.select("text").text(d[0]);
+    tooltip.select("text").text(x(d[0]));
   });
 	
   g.append("g")
