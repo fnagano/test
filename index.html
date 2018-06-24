@@ -83,11 +83,7 @@ d3.csv("data.csv", function(d, i, columns) {
       .text("Population")
 	  .attr("transform", "translate("+ (-width) +",-10)");   	// Newline
 
-	
-
-});
-	
-	var tooltip = svg.append("g")
+		var tooltip = svg.append("g")
   .attr("class", "tooltip")
   .style("display", "none");
     
@@ -103,6 +99,10 @@ tooltip.append("text")
   .style("text-anchor", "middle")
   .attr("font-size", "12px")
   .attr("font-weight", "bold");
+
+});
+	
+
 
 </script>
 
