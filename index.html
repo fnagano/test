@@ -13,7 +13,7 @@
 
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
+    width = +svg.attr("width")/2 - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -52,7 +52,7 @@ d3.csv("data.csv", function(d, i, columns) {
     .data(function(d) { return d; })
     .enter().append("rect")
       .attr("y", function(d) { return y(d.data.State); })	    //.attr("x", function(d) { return x(d.data.State); })
-      .attr("x", function(d) { return x(d[0]+100); })			    //.attr("y", function(d) { return y(d[1]); })	
+      .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("height", y.bandwidth())					    //.attr("width", x.bandwidth());	
   .on("mouseover", function() { tooltip.style("display", null); })
